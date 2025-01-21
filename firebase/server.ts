@@ -1,7 +1,7 @@
 import { Firestore, getFirestore } from "firebase-admin/firestore";
 import { getApps, ServiceAccount } from "firebase-admin/app"
-import admin, { initializeApp } from 'firebase-admin'
-import { Auth, getAuth } from "firebase/auth";
+import admin from 'firebase-admin'
+import { Auth, getAuth } from "firebase-admin/auth";
 
 const serviceAccount = {
     "type": "service_account",
@@ -21,14 +21,19 @@ const serviceAccount = {
 let firestore: Firestore
 //getApps()를 호출하여 이미 초기화된 Firebase 앱들의 리스트를 가져옵니다.
 let auth: Auth;
+const currentApps = getApps();
 
-const app = getApps().length
-    ? getApps()[0]
-    : initializeApp({
-        credential: admin.credential.cert(serviceAccount as ServiceAccount)
+if (!currentApps.length) {
+    const app = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount as ServiceAccount),
     });
-firestore = getFirestore(app)
-auth = getAuth(app)
+    firestore = getFirestore(app);
+    auth = getAuth(app);
+} else {
+    const app = currentApps[0];
+    firestore = getFirestore(app);
+    auth = getAuth(app);
+}
 
 
 //설정된 firestore 객체를 모듈로 내보냄으로써 다른 파일에서 Firestore 데이터베이스를 사용할 수 있도록 합니다.
