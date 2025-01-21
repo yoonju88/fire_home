@@ -10,10 +10,8 @@ export default function ContinueWithGoogleButton() {
     const router = useRouter()
     return (
         <Button onClick={async () => {
-            try {
-                await auth?.loginWithGoogle()
-                router.refresh()
-            } catch (e) { }
+            await auth?.loginWithGoogle()
+            router.refresh()
         }}
             className="w-full"
         >

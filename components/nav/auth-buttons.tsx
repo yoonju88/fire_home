@@ -62,6 +62,7 @@ export default function AuthButtons() {
                         <DropdownMenuItem
                             onClick={async () => {
                                 await auth.logout()
+                                router.refresh()
                             }}
                         >
                             Logout
