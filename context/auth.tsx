@@ -15,19 +15,20 @@ type AuthContextType = {
     currentUser: User | null; //현재 로그인한 사용자의 정보를 저장하며, 로그인하지 않았다면 null
     logout: () => Promise<void>;
     loginWithGoogle: () => Promise<void>;
+    customClaims: ParsedToken | null;
 }
 //인증 관련 데이터를 저장할 Context
 // 초기값은 null로 설정되어 있으며, AuthContext.Provider를 사용해 데이터를 전달
-const AuthContext = createContext<AuthContextType>({
-    currentUser: null,
-    logout: async () => { },
-    loginWithGoogle: async () => { }
-})
+const AuthContext = createContext<AuthContextType | null>(null)
+// currentUser: null,
+// logout: async () => { },
+// loginWithGoogle: async () => { },
+// customClaims: null,
+
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null)
-
 
     // Firebase 인증 상태 변화를 감지하고, currentUser를 업데이트
     useEffect(() => {
@@ -60,11 +61,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{
-            currentUser,
-            logout,
-            loginWithGoogle
-        }}>
+        <AuthContext.Provider
+            value={{
+                currentUser,
+                logout,
+                loginWithGoogle,
+                customClaims,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     )
