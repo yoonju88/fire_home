@@ -1,9 +1,11 @@
 "use client"
 import { auth } from "@/firebase/client"
+import { removeToken, setToken } from "./actions"
 import {
     signInWithPopup,
     User,
     GoogleAuthProvider,
+    ParsedToken,
 } from "firebase/auth"
 import { createContext, useState, useEffect, useContext } from "react"
 
@@ -24,10 +26,28 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
+    const [customClaims, setCustomClaims] = useState<ParsedToken | null>(null)
+
+
     // Firebase 인증 상태 변화를 감지하고, currentUser를 업데이트
     useEffect(() => {
-        const unsuscribe = auth.onAuthStateChanged((user) => {
+        const unsuscribe = auth.onAuthStateChanged(async (user) => {
             setCurrentUser(user ?? null)
+            if (user) {
+                const tokenResult = await user.getIdTokenResult()
+                const token = tokenResult.token;
+                const refreshToken = user.refreshToken;
+                const claims = tokenResult.claims;
+                setCustomClaims(claims ?? null)
+                if (token && refreshToken) {
+                    await setToken({
+                        token,
+                        refreshToken
+                    });
+                }
+            } else {
+                await removeToken()
+            }
         })
         return () => unsuscribe()
     }, [])
