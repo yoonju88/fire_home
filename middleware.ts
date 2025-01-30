@@ -5,7 +5,7 @@ import { decodeJwt } from "jose"
 
 export async function middleware(request: NextRequest) {
     // console.log("Middlewaore:", request.url)
-    if (requset.method === "POST") {
+    if (request.method === "POST") {
         return NextResponse.next()
     }
     const cookieStore = await cookies()
