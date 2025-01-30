@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 import { decodeJwt } from "jose"
 
 
-export async function middleware(requset: NextRequest) {
-    // console.log("Middlewaore:", requset.url)
+export async function middleware(request: NextRequest) {
+    // console.log("Middlewaore:", request.url)
     if (requset.method === "POST") {
         return NextResponse.next()
     }
