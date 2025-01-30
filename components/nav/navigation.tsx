@@ -8,7 +8,7 @@ export default function Navigation() {
         <nav className="bg-sky-950 text-white p-5 h-24 flex items-center justify-between">
             <Link
                 href="/"
-                className="text-3xl tracking-widest flex font-semibold gap-2 items-center uppercase"
+                className="text-3xl tracking-widest flex font-medium gap-2 items-center uppercase"
             >
                 <HomeIcon />
                 <span>
