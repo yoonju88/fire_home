@@ -1,9 +1,14 @@
 import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell } from '@/components/ui/table'
-import { getProperties } from '@/data/property'
+import { getProperties } from '@/data/properties'
 
 
 export default async function PropertyTable() {
-    const { data } = await getProperties()
+    const { data, totalPages } = await getProperties({
+        pagination: {
+            pageSize: 2,
+        }
+    });
+
 
     return <>
         {!data && (
@@ -44,6 +49,5 @@ export default async function PropertyTable() {
             </Table >
         )
         }
-
     </>
 }
