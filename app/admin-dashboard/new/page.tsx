@@ -1,6 +1,5 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumb'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ClockArrowDown } from 'lucide-react'
 import React from 'react'
 import NewPropertyForm from './new-property-form'
 

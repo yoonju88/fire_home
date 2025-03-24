@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell, TableFooter } from '@/components/ui/table'
 import { getProperties } from '@/data/properties'
+import { PencilIcon, Settings2, Settings2Icon } from 'lucide-react';
 import Link from 'next/link';
 
 
@@ -46,7 +47,19 @@ export default async function PropertyTable({
                                 <TableCell>{address}</TableCell>
                                 <TableCell>{property.price}</TableCell>
                                 <TableCell>{property.status}</TableCell>
-                                <TableCell>view /edit</TableCell>
+                                <TableCell>
+                                    <Button asChild variant="outline" size="sm">
+                                        <Link href="#">
+                                            <Settings2Icon />
+                                        </Link>
+
+                                    </Button>
+                                    <Button asChild variant="outline" size="sm" className="mx-1">
+                                        <Link href={`/admin-dashboard/edit/${property.id}`}>
+                                            <PencilIcon />
+                                        </Link>
+                                    </Button>
+                                </TableCell>
                             </TableRow>
                         )
                     })}
