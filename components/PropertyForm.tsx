@@ -33,7 +33,7 @@ export default function PropertyForm({ handleSubmitAction, submitButtonLabel }: 
     })
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmitAction)}>
-            <div className="grid grid-cols-2 gap-4 ">
+            <div className="grid grid-cols-2 gap-4">
                 <fieldset className="flex flex-col gap-2">
                     <FormField
                         control={form.control}
