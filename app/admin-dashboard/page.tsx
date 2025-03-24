@@ -6,7 +6,13 @@ import { PlusCircleIcon } from 'lucide-react'
 import PropertyTable from './properties-table'
 
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+    searchParams
+}: {
+    searchParams?: Promise<any>
+}) {
+
+    const searchParamsValue = await searchParams
     return (
         <div>
             <Breadcrumbs items={[
@@ -24,7 +30,7 @@ export default async function AdminDashboard() {
                     <PlusCircleIcon /> New Property
                 </Link>
             </Button>
-            <PropertyTable />
+            <PropertyTable page={searchParamsValue?.page ? parseInt(searchParamsValue.page) : 1} />
         </div>
     )
 }

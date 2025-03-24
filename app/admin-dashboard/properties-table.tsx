@@ -1,15 +1,20 @@
-import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell } from '@/components/ui/table'
+import { Button } from '@/components/ui/button';
+import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell, TableFooter } from '@/components/ui/table'
 import { getProperties } from '@/data/properties'
+import Link from 'next/link';
 
 
-export default async function PropertyTable() {
+export default async function PropertyTable({
+    page = 1
+}: {
+    page?: number;
+}) {
     const { data, totalPages } = await getProperties({
         pagination: {
+            page,
             pageSize: 2,
         }
     });
-
-
     return <>
         {!data && (
             <h1 className=' text-center text-zinc-400 py-20 font-bold text-3xl'>
@@ -46,6 +51,17 @@ export default async function PropertyTable() {
                         )
                     })}
                 </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell colSpan={4} className='text-center'>
+                            {Array.from({ length: totalPages }).map((_, i) => (
+                                <Button key={i} asChild variant="outline" className='mx-1'>
+                                    <Link href={`/admin-dashboard?page=${i + 1}`}>{i + 1}</Link>
+                                </Button>
+                            ))}
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
             </Table >
         )
         }
