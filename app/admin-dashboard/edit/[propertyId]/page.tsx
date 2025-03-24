@@ -1,13 +1,19 @@
 import { Breadcrumbs } from '@/components/ui/breadcrumb'
-import { getPropertiesId } from '@/data/properties';
+import { getPropertyById } from '@/lib/properties';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import EditPropertyForm from './edit-property-form';
+import notFound from './not-found';
 
-export default async function EditProperty({ params }: {
-    params: Promise<any>
-}) {
-    const paramsValue = await params;
-    const prorperty = await getPropertiesId(paramsValue.propertyId)
+type Params = { propertyId: string }
 
+
+export default async function EditProperty({ params }: { params: Promise<Params> }) {
+    const { propertyId } = await params
+    const property = await getPropertyById(propertyId)
+
+    if (!property) {
+        notFound()
+    }
     return (
         <div>
             <Breadcrumbs items={[{
@@ -24,7 +30,18 @@ export default async function EditProperty({ params }: {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    edit property form
+                    <EditPropertyForm
+                        id={property.id}
+                        address1={property.address1}
+                        address2={property.address2}
+                        postcode={property.postcode}
+                        city={property.city}
+                        price={property.price}
+                        bedrooms={property.bedrooms}
+                        bathrooms={property.bathrooms}
+                        description={property.description}
+                        status={property.status}
+                    />
                 </CardContent>
             </Card>
         </div>
