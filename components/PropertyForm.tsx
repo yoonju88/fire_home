@@ -16,7 +16,11 @@ type Props = {
     defaultValues?: z.infer<typeof propertyDataSchema>
 }
 
-export default function PropertyForm({ handleSubmitAction, submitButtonLabel, defaultValues }: Props) {
+export default function PropertyForm({
+    handleSubmitAction,
+    submitButtonLabel,
+    defaultValues,
+}: Props) {
     //defaultValues 객체를 **스프레드 연산자 (...)**로 덮어씌움
     //즉, defaultValues에 값이 있다면 기존 값이 덮어씌워짐 (우선순위: defaultValues > 기본 객체)
     const combinedDefaultValues: z.infer<typeof propertyDataSchema> = {
@@ -26,27 +30,17 @@ export default function PropertyForm({ handleSubmitAction, submitButtonLabel, de
             city: "",
             postcode: "",
             price: 0,
-            description: "",
             bedrooms: 0,
             bathrooms: 0,
-            status: "draft"
+            description: "",
+            status: "draft",
         },
         ...defaultValues,
     }
 
     const form = useForm<z.infer<typeof propertyDataSchema>>({
         resolver: zodResolver(propertyDataSchema),
-        defaultValues: {
-            address1: "",
-            address2: "",
-            city: "",
-            postcode: "",
-            price: 0,
-            description: "",
-            bedrooms: 0,
-            bathrooms: 0,
-            status: "draft"
-        }
+        defaultValues: combinedDefaultValues,
     })
 
     return <Form {...form}>

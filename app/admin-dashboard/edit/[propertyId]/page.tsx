@@ -4,16 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import EditPropertyForm from './edit-property-form';
 import notFound from './not-found';
 
-type Params = { propertyId: string }
-
-
-export default async function EditProperty({ params }: { params: Promise<Params> }) {
+export default async function EditProperty({ params }: { params: Promise<{ propertyId: string }> }) {
     const { propertyId } = await params
     const property = await getPropertyById(propertyId)
 
-    if (!property) {
-        notFound()
-    }
+    if (!property) { notFound() }
+
     return (
         <div>
             <Breadcrumbs items={[{
