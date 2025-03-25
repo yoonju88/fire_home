@@ -20,7 +20,6 @@ export const createProperty = async (data: {
     bedrooms: number;
     bathrooms: number;
     status: "for-sale" | "draft" | "withdrawn" | "sold"
-    token: string;
 }, authToken: string
 ) => {
     const verifiedToken = await auth.verifyIdToken(authToken);
