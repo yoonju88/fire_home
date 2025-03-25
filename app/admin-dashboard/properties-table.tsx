@@ -1,9 +1,10 @@
+import PropertyStatusBadge from '@/components/Property-status-badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell, TableFooter } from '@/components/ui/table'
 import { getProperties } from '@/data/properties'
-import { PencilIcon, Settings2Icon } from 'lucide-react';
+import { EyeIcon, PencilIcon } from 'lucide-react';
 import Link from 'next/link';
-
+import numeral from "numeral"
 
 export default async function PropertyTable({
     page = 1
@@ -45,14 +46,15 @@ export default async function PropertyTable({
                         return (
                             <TableRow key={property.id}>
                                 <TableCell>{address}</TableCell>
-                                <TableCell>{property.price}</TableCell>
-                                <TableCell>{property.status}</TableCell>
+                                <TableCell>€ {numeral(property.price).format("0,0")}</TableCell>
                                 <TableCell>
+                                    <PropertyStatusBadge status={property.status} />
+                                </TableCell>
+                                <TableCell className="flex justify-end gap-1">
                                     <Button asChild variant="outline" size="sm">
-                                        <Link href="#">
-                                            <Settings2Icon />
+                                        <Link href={`/property/${property.id}`}>
+                                            <EyeIcon />
                                         </Link>
-
                                     </Button>
                                     <Button asChild variant="outline" size="sm" className="mx-1">
                                         <Link href={`/admin-dashboard/edit/${property.id}`}>
@@ -68,7 +70,13 @@ export default async function PropertyTable({
                     <TableRow>
                         <TableCell colSpan={4} className='text-center'>
                             {Array.from({ length: totalPages }).map((_, i) => (
-                                <Button key={i} asChild variant="outline" className='mx-1'>
+                                <Button
+                                    key={i}
+                                    asChild={page !== i + 1} // 현재 페이지가 아닐 때만 asChild 적용
+                                    variant="outline"
+                                    className='mx-1'
+                                    disabled={page === i + 1} // 현재 페이지 버튼은 비활성화
+                                >
                                     <Link href={`/admin-dashboard?page=${i + 1}`}>{i + 1}</Link>
                                 </Button>
                             ))}
