@@ -5,7 +5,7 @@ import { useAuth } from "@/context/auth";
 import { propertyDataSchema } from '@/validation/propertySchema'
 import { z } from "zod"
 import { PlusCircleIcon } from 'lucide-react'
-import { saveNewProperty } from './action'
+import { createProperty } from './action'
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -16,7 +16,7 @@ export default function NewPropertyForm() {
     const handleSubmit = async (data: z.infer<typeof propertyDataSchema>) => {
         const token = await auth?.currentUser?.getIdToken()
         if (!token) { return; }
-        const response = await saveNewProperty({ ...data, token })
+        const response = await createProperty(data, token)
         if (!!response.error) {
             toast.error("Error!", {
                 description: response.message,
