@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Table, TableRow, TableHead, TableHeader, TableBody, TableCell, TableFooter } from '@/components/ui/table'
 import { getProperties } from '@/data/properties'
-import { PencilIcon, Settings2, Settings2Icon } from 'lucide-react';
+import { PencilIcon, Settings2Icon } from 'lucide-react';
 import Link from 'next/link';
 
 

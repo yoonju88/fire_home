@@ -5,11 +5,10 @@ import Link from 'next/link'
 import { PlusCircleIcon } from 'lucide-react'
 import PropertyTable from './properties-table'
 
-
 export default async function AdminDashboard({
     searchParams
 }: {
-    searchParams?: Promise<any>
+    searchParams?: Promise<Record<string, string | undefined>>
 }) {
 
     const searchParamsValue = await searchParams
