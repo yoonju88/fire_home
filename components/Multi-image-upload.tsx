@@ -2,7 +2,7 @@
 
 import { Button } from "./ui/button";
 import { useRef } from "react";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd"
 import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { MoveIcon, XIcon } from "lucide-react";
@@ -18,7 +18,6 @@ type Props = {
     onImagesChangeAction: (images: ImageUpload[]) => void // 이미지 목록이 변경될 때 실행될 함수 (부모 컴포넌트에서 업데이트 처리)
 }
 
-
 export default function MultiImageUpload({
     images = [],
     onImagesChangeAction,
@@ -33,8 +32,23 @@ export default function MultiImageUpload({
                 url: URL.createObjectURL(file),
                 file
             }
-        })
+        });
         onImagesChangeAction([...images, ...newImages])
+    }
+ // 이미지를 드랙 하여 순서를 변경
+    const handleDragEnd = (result:DropResult) => {
+        // 드레그가 유호한 목적지에 도착하지 않은 경우 함수 종료
+        if (!result.destination) return;
+
+        const items = Array.from(images); // 현재 이미지 목록 복사
+        const [reorderdImages] = items.splice(result.source.index,1) // 드레그 된 이미지 제거        
+        items.splice(result.destination.index, 0, reorderdImages) // 새로운 위치에 이미지 추가
+        onImagesChangeAction(items) // 변경되 이미지 목록 업데이트
+    }
+    // 이미지 업로드 리스트에서 삭제
+    const handleDelete = (id:string) => {
+        const updatedImages = images.filter((image)=> image.id !== id)
+        onImagesChangeAction(updatedImages)
     }
 
     return (
@@ -55,13 +69,7 @@ export default function MultiImageUpload({
             >
                 Upload images
             </Button>
-            <DragDropContext onDragEnd={(result) => {
-                if (!result.destination) return;
-                const reorderdImages = [...images]
-                const [movedImage] = reorderdImages.splice(result.source.index, 1)
-                reorderdImages.splice(result.destination.index, 0, movedImage)
-                onImagesChangeAction(reorderdImages)
-            }}>
+            <DragDropContext onDragEnd={(result) => {handleDragEnd }}>
                 <Droppable droppableId="property-images" direction="vertical">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} >
@@ -95,7 +103,7 @@ export default function MultiImageUpload({
                                                     }
                                                 </div>
                                                 <div className="flex items-center p-2">
-                                                    <button className="text-orange-500 p-2">
+                                                    <button className="text-orange-500 p-2" onClick={()=> handleDelete(image.id)}>
                                                         <XIcon />
                                                     </button>
                                                     <div className="text-blue-400">
