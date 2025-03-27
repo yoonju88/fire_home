@@ -69,7 +69,7 @@ export default function MultiImageUpload({
             >
                 Upload images
             </Button>
-            <DragDropContext onDragEnd={(result) => {handleDragEnd }}>
+            <DragDropContext onDragEnd={handleDragEnd }>
                 <Droppable droppableId="property-images" direction="vertical">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} >
