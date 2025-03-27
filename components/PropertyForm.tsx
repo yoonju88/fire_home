@@ -200,7 +200,7 @@ export default function PropertyForm({
                     <FormItem>
                         <FormControl>
                             <MultiImageUpload
-                                onImagesChange={(images: ImageUpload[]) => {
+                                onImagesChangeAction={(images: ImageUpload[]) => {
                                     form.setValue("images", images)
                                 }}
                                 images={field.value}

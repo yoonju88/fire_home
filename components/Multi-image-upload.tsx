@@ -2,6 +2,10 @@
 
 import { Button } from "./ui/button";
 import { useRef } from "react";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd"
+import Image from "next/image";
+import { Badge } from "./ui/badge";
+import { MoveIcon, XIcon } from "lucide-react";
 
 export type ImageUpload = {
     id: string;
@@ -34,7 +38,7 @@ export default function MultiImageUpload({
     }
 
     return (
-        <div className="w-full max-w-3xl max-auto p-4">
+        <div className="w-full max-w-3xl m-auto p-4">
             <input
                 type="file"
                 ref={uploadInputRef}
@@ -46,11 +50,69 @@ export default function MultiImageUpload({
             <Button
                 type="button"
                 onClick={() => uploadInputRef?.current?.click()}
+                className="w-full"
+                variant="outline"
             >
                 Upload images
             </Button>
+            <DragDropContext onDragEnd={(result) => {
+                if (!result.destination) return;
+                const reorderdImages = [...images]
+                const [movedImage] = reorderdImages.splice(result.source.index, 1)
+                reorderdImages.splice(result.destination.index, 0, movedImage)
+                onImagesChangeAction(reorderdImages)
+            }}>
+                <Droppable droppableId="property-images" direction="vertical">
+                    {(provided) => (
+                        <div {...provided.droppableProps} ref={provided.innerRef} >
+                            {images.map((image, index) => (
+                                <Draggable key={image.id} draggableId={image.id} index={index}>
+                                    {(provided) => (
+                                        <div
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                            className='relative p-2'
+                                        >
+                                            <div className='bg-gray-100 rounded-lg flex items-center overflow-hidden gap-2'>
+                                                <div className="size-16 relative">
+                                                    <Image
+                                                        src={image.url}
+                                                        alt=""
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                                <div className="flex-grow">
+                                                    <p className="text-xm font-medium">
+                                                        Image {index + 1}
+                                                    </p>
+                                                    {index === 0 &&
+                                                        <Badge variant="success">
+                                                            Featured Image
+                                                        </Badge>
 
-        </div>
+                                                    }
+                                                </div>
+                                                <div className="flex items-center p-2">
+                                                    <button className="text-orange-500 p-2">
+                                                        <XIcon />
+                                                    </button>
+                                                    <div className="text-blue-400">
+                                                        <MoveIcon />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        </div >
     )
 }
 

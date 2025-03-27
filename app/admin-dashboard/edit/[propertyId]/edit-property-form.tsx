@@ -22,6 +22,7 @@ export default function EditPropertyForm({
     bathrooms,
     description,
     status,
+    images,
 }: Props) {
     const auth = useAuth()
     const router = useRouter()
@@ -54,6 +55,7 @@ export default function EditPropertyForm({
                     bathrooms,
                     description,
                     status,
+                    images,
                 }} />
         </div>
     )
