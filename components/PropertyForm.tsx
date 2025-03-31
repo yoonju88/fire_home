@@ -44,7 +44,7 @@ export default function PropertyForm({
         resolver: zodResolver(propertySchema),
         defaultValues: combinedDefaultValues,
     })
-
+    console.log("Submit Button Label:", submitButtonLabel);
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmitAction)}>
             <div className="grid grid-cols-2 gap-4">
@@ -204,13 +204,18 @@ export default function PropertyForm({
                                     form.setValue("images", images)
                                 }}
                                 images={field.value}
+                                urlFormatter={(image) => {
+                                    if (!image.file) {
+                                        return `https://firebasestorage.googleapis.com/v0/b/fire-home.appspot.com/o/${encodeURIComponent(image.url)}?alt=media`
+                                    }
+                                    return image.url
+                                }}
                             />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
             />
-
             <Button
                 type="submit"
                 className="max-w-md mx-auto mt-4 w-full flex gap-2"

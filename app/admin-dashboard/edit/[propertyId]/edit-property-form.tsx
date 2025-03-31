@@ -8,6 +8,7 @@ import { useAuth } from "@/context/auth";
 import { updateProperty } from "./action";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { SaveIcon } from "lucide-react";
 
 type Props = Property;
 
@@ -22,7 +23,7 @@ export default function EditPropertyForm({
     bathrooms,
     description,
     status,
-    images,
+    images = [],
 }: Props) {
     const auth = useAuth()
     const router = useRouter()
@@ -38,13 +39,16 @@ export default function EditPropertyForm({
 
         })
         router.push('/admin-dashboard')
-
     }
     return (
         <div>
             <PropertyForm
                 handleSubmitAction={handleSubmit}
-                submitButtonLabel="Save Property"
+                submitButtonLabel={
+                    <>
+                        <SaveIcon /> Save Property
+                    </>
+                }
                 defaultValues={{
                     address1,
                     address2,
@@ -55,8 +59,12 @@ export default function EditPropertyForm({
                     bathrooms,
                     description,
                     status,
-                    images,
-                }} />
+                    images: images.map(image => ({
+                        id: image,
+                        url: image,
+                    })),
+                }}
+            />
         </div>
     )
 }

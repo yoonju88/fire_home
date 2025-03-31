@@ -36,12 +36,15 @@ export const propertyDataSchema = z.object({
 })
 
 
-export const PropertyImageSchema = z.object({
-    images: z.array(z.object({
-        id: z.string(),
-        url: z.string(),
-        file: z.instanceof(File).optional()
-    }))
-})
+export const propertyImagesSchema = z.object({
+    images: z.array(
+        z.object({
+            id: z.string(),
+            url: z.string(),
+            file: z.instanceof(File).optional(),
+        })
+    ),
+});
 
-export const propertySchema = propertyDataSchema.and(PropertyImageSchema);
+
+export const propertySchema = propertyDataSchema.and(propertyImagesSchema);

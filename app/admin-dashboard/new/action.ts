@@ -1,7 +1,6 @@
 "use server"
 import { auth, firestore } from "@/firebase/server";
 import { propertyDataSchema } from "@/validation/propertySchema";
-
 import admin from 'firebase-admin'
 
 if (!admin.apps.length) {
@@ -9,18 +8,18 @@ if (!admin.apps.length) {
         credential: admin.credential.applicationDefault(),  // Or load service account credentials
     });
 }
-
-export const createProperty = async (data: {
-    address1: string;
-    address2?: string;
-    city: string;
-    postcode: string;
-    description: string;
-    price: number;
-    bedrooms: number;
-    bathrooms: number;
-    status: "for-sale" | "draft" | "withdrawn" | "sold"
-}, authToken: string
+export const createProperty = async (
+    data: {
+        address1: string;
+        address2?: string;
+        city: string;
+        postcode: string;
+        description: string;
+        price: number;
+        bedrooms: number;
+        bathrooms: number;
+        status: "for-sale" | "draft" | "withdrawn" | "sold"
+    }, authToken: string
 ) => {
     const verifiedToken = await auth.verifyIdToken(authToken);
 

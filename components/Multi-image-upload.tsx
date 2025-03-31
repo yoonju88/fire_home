@@ -16,11 +16,13 @@ export type ImageUpload = {
 type Props = {
     images?: ImageUpload[]; //현재 업로드된 이미지 목록 (선택적, 초기 값이 없을 수도 있음)
     onImagesChangeAction: (images: ImageUpload[]) => void // 이미지 목록이 변경될 때 실행될 함수 (부모 컴포넌트에서 업데이트 처리)
+    urlFormatter: (image: ImageUpload) => string
 }
 
 export default function MultiImageUpload({
     images = [],
     onImagesChangeAction,
+    urlFormatter
 }: Props) {
 
     const uploadInputRef = useRef<HTMLInputElement | null>(null)
@@ -35,19 +37,19 @@ export default function MultiImageUpload({
         });
         onImagesChangeAction([...images, ...newImages])
     }
- // 이미지를 드랙 하여 순서를 변경
-    const handleDragEnd = (result:DropResult) => {
+    // 이미지를 드랙 하여 순서를 변경
+    const handleDragEnd = (result: DropResult) => {
         // 드레그가 유호한 목적지에 도착하지 않은 경우 함수 종료
         if (!result.destination) return;
 
         const items = Array.from(images); // 현재 이미지 목록 복사
-        const [reorderdImages] = items.splice(result.source.index,1) // 드레그 된 이미지 제거        
+        const [reorderdImages] = items.splice(result.source.index, 1) // 드레그 된 이미지 제거        
         items.splice(result.destination.index, 0, reorderdImages) // 새로운 위치에 이미지 추가
         onImagesChangeAction(items) // 변경되 이미지 목록 업데이트
     }
     // 이미지 업로드 리스트에서 삭제
-    const handleDelete = (id:string) => {
-        const updatedImages = images.filter((image)=> image.id !== id)
+    const handleDelete = (id: string) => {
+        const updatedImages = images.filter((image) => image.id !== id)
         onImagesChangeAction(updatedImages)
     }
 
@@ -69,7 +71,7 @@ export default function MultiImageUpload({
             >
                 Upload images
             </Button>
-            <DragDropContext onDragEnd={handleDragEnd }>
+            <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="property-images" direction="vertical">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} >
@@ -85,10 +87,11 @@ export default function MultiImageUpload({
                                             <div className='bg-gray-100 rounded-lg flex items-center overflow-hidden gap-2'>
                                                 <div className="size-16 relative">
                                                     <Image
-                                                        src={image.url}
-                                                        alt=""
+                                                        src={urlFormatter ? urlFormatter(image) : image.url}
+                                                        alt="hi"
                                                         fill
                                                         className="object-cover"
+
                                                     />
                                                 </div>
                                                 <div className="flex-grow">
@@ -103,7 +106,7 @@ export default function MultiImageUpload({
                                                     }
                                                 </div>
                                                 <div className="flex items-center p-2">
-                                                    <button className="text-orange-500 p-2" onClick={()=> handleDelete(image.id)}>
+                                                    <button className="text-orange-500 p-2" onClick={() => handleDelete(image.id)}>
                                                         <XIcon />
                                                     </button>
                                                     <div className="text-blue-400">

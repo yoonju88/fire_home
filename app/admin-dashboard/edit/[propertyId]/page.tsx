@@ -44,6 +44,7 @@ export default async function EditProperty({ params }: { params: Promise<{ prope
                         bathrooms={property.bathrooms}
                         description={property.description}
                         status={property.status}
+                        images={property.images || []}
                     />
                 </CardContent>
             </Card>
