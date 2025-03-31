@@ -5,7 +5,7 @@ import { z } from "zod"
 
 export const savePropertyImages = async ({
     propertyId,
-    images
+    images,
 }: {
     propertyId: string
     images: string[]
