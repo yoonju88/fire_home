@@ -46,7 +46,7 @@ export default async function PropertySearch({
             </h1>
             <Card>
                 <CardHeader>
-                    <CardTitle>Filters</CardTitle>
+                    <CardTitle>FILTERS</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Suspense>
@@ -104,6 +104,37 @@ export default async function PropertySearch({
                                 </div>
                             </CardContent>
                         </Card>
+                    )
+                })}
+            </div>
+            <div className="flex gap-2 items-center justify-center py-10">
+                {Array.from({ length: totalPages }).map((_, i) => {
+                    const newSearchParams = new URLSearchParams()
+
+                    if (searchParamsValues?.minPrice) {
+                        newSearchParams.set("minPrice", searchParamsValues.minPrice)
+                    }
+
+                    if (searchParamsValues?.maxPrice) {
+                        newSearchParams.set("maxPrice", searchParamsValues.maxPrice)
+                    }
+
+                    if (searchParamsValues?.minBedrooms) {
+                        newSearchParams.set("minBedrooms", searchParamsValues.minBedrooms)
+                    }
+                    newSearchParams.set("page", `${i + 1}`)
+
+                    return (
+                        <Button
+                            key={i}
+                            asChild={page !== i + 1}
+                            disabled={page === i + 1}
+                            variant='outline'
+                        >
+                            <Link href={`/property-search?${newSearchParams.toString()}`}>
+                                {i + 1}
+                            </Link>
+                        </Button>
                     )
                 })}
             </div>
