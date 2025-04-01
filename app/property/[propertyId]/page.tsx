@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/carousel';
 import Image from 'next/image';
 import BackButton from './back-button';
+import imageUrlFormatter from '@/lib/imageUrlFormatter';
 
 export default async function Property({ params }: { params: Promise<{ propertyId: string }> }) {
     const { propertyId } = await params
@@ -38,9 +39,7 @@ export default async function Property({ params }: { params: Promise<{ propertyI
                                 <CarouselItem key={image}>
                                     <div className="relative h-[80vh] min-h-80">
                                         <Image
-                                            src={`https://firebasestorage.googleapis.com/v0/b/fire-home-ff343.firebasestorage.app/o/${encodeURIComponent(
-                                                image
-                                            )}?alt=media`}
+                                            src={imageUrlFormatter(image)}
                                             alt={`Image ${index + 1}`}
                                             fill
                                             className="object-cover"

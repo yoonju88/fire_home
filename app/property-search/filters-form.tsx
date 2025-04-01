@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const formSchema = z.object({
     minPrice: z.string().optional(),
@@ -13,18 +14,36 @@ const formSchema = z.object({
 })
 
 export default function FiltersForm() {
+    const router = useRouter();
+    const searchParams = useSearchParams()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            maxPrice: "",
-            minPrice: "",
-            minBedrooms: "",
+            maxPrice: searchParams.get("maxPrice") ?? "",
+            minPrice: searchParams.get("minPrice") ?? "",
+            minBedrooms: searchParams.get("minBedrooms") ?? "",
         }
     })
 
     const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+        console.log({ data })
+        const newSearchParams = new URLSearchParams()
 
+        if (data.minPrice) {
+            newSearchParams.set("minPrice", data.minPrice)
+        }
+
+        if (data.maxPrice) {
+            newSearchParams.set("maxPrice", data.maxPrice)
+        }
+
+        if (data.minBedrooms) {
+            newSearchParams.set("minBedrooms", data.minBedrooms)
+        }
+        newSearchParams.set("page", "1")
+        router.push(`/property-search?${newSearchParams.toString()}`)
     }
+
     return (
         <Form {...form}>
             <form
@@ -79,7 +98,7 @@ export default function FiltersForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="button">
+                <Button type="submit" className='mt-auto'>
                     Search
                 </Button>
             </form>
