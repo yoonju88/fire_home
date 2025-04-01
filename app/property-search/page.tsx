@@ -9,17 +9,25 @@ import { Button } from '@/components/ui/button';
 import numeral from 'numeral';
 import Link from "next/link"
 
+interface PropertySearchParams {
+    page?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    minBedrooms?: string;
+    [key: string]: string | string[] | undefined;
+}
+
 export default async function PropertySearch({
     searchParams
 }: {
-    searchParams: Promise<any>
+    searchParams: Promise<PropertySearchParams>
 }) {
     const searchParamsValues = await searchParams;
 
-    const parsedPage = parseInt(searchParamsValues?.page)
-    const parsedMinPrice = parseInt(searchParamsValues?.minPrice)
-    const parsedMaxPrice = parseInt(searchParamsValues?.maxPrice)
-    const parsedMinBedrooms = parseInt(searchParamsValues?.minBedrooms)
+    const parsedPage = parseInt(searchParamsValues.page || '1')
+    const parsedMinPrice = parseInt(searchParamsValues.minPrice || '0')
+    const parsedMaxPrice = parseInt(searchParamsValues.maxPrice || '0')
+    const parsedMinBedrooms = parseInt(searchParamsValues.minBedrooms || '0')
 
     const page = isNaN(parsedPage) ? 1 : parsedPage
     const minPrice = isNaN(parsedMinPrice) ? null : parsedMinPrice
