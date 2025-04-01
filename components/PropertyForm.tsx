@@ -206,7 +206,7 @@ export default function PropertyForm({
                                 images={field.value}
                                 urlFormatter={(image) => {
                                     if (!image.file) {
-                                        return `https://firebasestorage.googleapis.com/v0/b/fire-home.appspot.com/o/${encodeURIComponent(image.url)}?alt=media`
+                                        return `https://firebasestorage.googleapis.com/v0/b/fire-home-ff343.firebasestorage.app/o/${encodeURIComponent(image.url)}?alt=media`
                                     }
                                     return image.url
                                 }}

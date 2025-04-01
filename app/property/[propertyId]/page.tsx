@@ -1,10 +1,19 @@
-import React from 'react'
+
 import { getPropertyById } from '@/lib/properties';
 import ReactMarkdown from 'react-markdown'
-import { BathIcon, BedIcon } from 'lucide-react';
+import {
+    BathIcon,
+    BedIcon
+} from 'lucide-react';
 import PropertyStatusBadge from '@/components/Property-status-badge';
 import numeral from 'numeral';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
+} from '@/components/ui/carousel';
 import Image from 'next/image';
 import BackButton from './back-button';
 
@@ -22,17 +31,17 @@ export default async function Property({ params }: { params: Promise<{ propertyI
     return (
         <div className="grid grid-cols-[1fr_500px]">
             <div>
-                {!!property?.images &&
-                    <Carousel>
+                {!!property?.images && (
+                    <Carousel className="w-full">
                         <CarouselContent>
                             {property?.images.map((image, index) => (
                                 <CarouselItem key={image}>
                                     <div className="relative h-[80vh] min-h-80">
                                         <Image
-                                            src={`https://firebasestorage.googleapis.com/v0/b/fire-home.appspot.com/o/${encodeURIComponent(
+                                            src={`https://firebasestorage.googleapis.com/v0/b/fire-home-ff343.firebasestorage.app/o/${encodeURIComponent(
                                                 image
                                             )}?alt=media`}
-                                            alt={`image ${index + 1}`}
+                                            alt={`Image ${index + 1}`}
                                             fill
                                             className="object-cover"
                                         />
@@ -40,20 +49,20 @@ export default async function Property({ params }: { params: Promise<{ propertyI
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
-                        {property.images.length > 1 &&
+                        {property.images.length > 1 && (
                             <>
                                 <CarouselPrevious className="translate-x-24 size-12" />
                                 <CarouselNext className="-translate-x-24 size-12" />
                             </>
-                        }
+                        )}
                     </Carousel>
-                }
-            </div>
-            <div className="property-description max-w-screen-md mx-auto py-10 px-4">
-                <BackButton />
-                <ReactMarkdown >
-                    {String(property?.description) || ""}
-                </ReactMarkdown>
+                )}
+                <div className="property-description max-w-screen-md mx-auto py-10 px-4">
+                    <BackButton />
+                    <ReactMarkdown >
+                        {String(property?.description) || ""}
+                    </ReactMarkdown>
+                </div>
             </div>
             <div className='bg-sky-200 h-screen sticky top-0 grid place-items-center p-10'>
                 <div className='flex flex-col gap-10 w-full'>
