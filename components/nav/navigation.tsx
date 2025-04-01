@@ -18,7 +18,7 @@ export default function Navigation() {
             <ul className='flex gap-6 items-center'>
                 <li>
                     <Link
-                        href="/admin-dashboard/new"
+                        href="/property-search"
                         className='uppercase tracking-widest hover:underline'
                     >
                         Property search
