@@ -29,6 +29,8 @@ export default async function Property({ params }: { params: Promise<{ propertyI
         property?.postcode
     ].filter(addressLine => !!addressLine)
 
+
+
     return (
         <div className="grid grid-cols-[1fr_500px]">
             <div>

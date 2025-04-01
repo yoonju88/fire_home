@@ -23,11 +23,16 @@ export default function PropertyStatusBadge({
     status,
     className,
 }: {
-    status: PropertyStatus;
+    status: PropertyStatus | undefined
     className?: string;
 }) {
+    if (!status) {
+        return <Badge variant="secondary" className={className}>Unknown</Badge>;
+    }
+
     const label = statusLabel[status]
     const badgeVariant = variant[status]
+
 
     return (
         <Badge
