@@ -1,14 +1,18 @@
 import { PropertyStatus } from "@/types/propertyStatus"
 import { Badge } from "./ui/badge"
 
-const statusLabel = {
+const statusLabel: Record<PropertyStatus, string> = {
     "for-sale": "For Sale",
     "withdrawn": "Withdrawn",
     "draft": "Draft",
     "sold": "Sold",
 }
 
-const variant: { [key: string]: "primary" | "destructive" | "secondary" | "success" } = {
+const variant: Record<
+    PropertyStatus,
+    "primary" | "destructive" | "secondary" | "success" | "default"
+
+> = {
     "for-sale": "primary",
     "withdrawn": "destructive",
     "draft": "secondary",
@@ -23,8 +27,14 @@ export default function PropertyStatusBadge({
     className?: string;
 }) {
     const label = statusLabel[status]
+    const badgeVariant = variant[status]
 
     return (
-        <Badge variant={variant[status]} className={className}>{label}</Badge>
+        <Badge
+            variant={badgeVariant}
+            className={className}
+        >
+            {label}
+        </Badge>
     )
 }
