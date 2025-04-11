@@ -3,34 +3,18 @@ import ContinueWithGoogleButton from '@/components/nav/Continue-with-google';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { registerUserSchema } from '@/validation/registerUser';
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import { registerUser } from './action';
+import { z } from "zod"
+import { toast } from 'sonner';
+import { useRouter } from "next/navigation";
 
-import { z } from 'zod'
-
-const formSchema = z.object({
-    email: z.string().email(),
-    name: z.string().min(2, "Name must be al least 2 characters"),
-    password: z.string().refine((value) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-        return regex.test(value)
-    }, {
-        message: 'Password must contain at least 6 caracters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special caracter',
-    },
-    ),
-    passwordConfirm: z.string(),
-}).superRefine((data, ctx) => {
-    if (data.password !== data.passwordConfirm) {
-        ctx.addIssue({
-            message: "Password do not match",
-            path: ["passwordConfirm"],
-            code: "custom",
-        })
-    }
-})
 
 export default function RegisterForm() {
-    const form = useForm<z.infer<typeof formSchema>>({
+    const router = useRouter()
+    const form = useForm<z.infer<typeof registerUserSchema>>({
         defaultValues: {
             email: "",
             name: "",
@@ -39,7 +23,21 @@ export default function RegisterForm() {
         }
     })
 
-    const handleSubmit = async (data: z.infer<typeof formSchema>) => { }
+    const handleSubmit = async (data: z.infer<typeof registerUserSchema>) => {
+        const response = await registerUser(data)
+
+        if (!!response?.error) {
+            toast.error("Error", {
+                description: response.message,
+            })
+            return
+        }
+
+        toast.success("Success!", {
+            description: "Your account was created successfully 👏🏼"
+        })
+        router.push("/login")
+    }
 
     return (
         <Form {...form}>

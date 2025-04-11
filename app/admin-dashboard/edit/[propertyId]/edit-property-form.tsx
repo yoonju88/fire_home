@@ -72,7 +72,6 @@ export default function EditPropertyForm({
 
         toast.success("Success!", {
             description: "Property updated successfully 👏🏼"
-
         })
         router.push('/admin-dashboard')
     }
