@@ -22,10 +22,14 @@ export const registerUser = async (data: {
             email: data.email,
             password: data.password
         })
-    } catch (e: any) {
+    } catch (e: unknown) {
+        let message = "Could not register user";
+        if (e instanceof Error) {
+            message = e.message;
+        }
         return {
             error: true,
-            message: e.message ?? "Could not register user"
+            message,
             //에러 타입으로 메세지 보여줌 이미 등록된 유저인지 아닌지
         }
     }

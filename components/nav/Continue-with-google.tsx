@@ -15,7 +15,7 @@ export default function ContinueWithGoogleButton() {
                 try {
                     await auth?.loginWithGoogle()
                     router.refresh()
-                } catch (e) { }
+                } catch (e) { console.error("Close login with google modal", e); }
             }}
             className="w-full"
             variant="outline"

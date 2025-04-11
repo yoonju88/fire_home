@@ -29,11 +29,17 @@ export default function LoginForm() {
         try {
             await auth?.loginWithEmail(data.email, data.password)
             router.refresh()
-        } catch (e: any) {
+        } catch (e: unknown) {
+            let errorMessage = "An error occurred";
             //To display type of error 
+            if (e instanceof Error) {
+                // Firebase 에러는 code가 붙는 경우가 있어
+                const errorCode = (e as any).code;
+                errorMessage = errorCode === "auth/invalid-credential" ? "Incorrect credential" : errorMessage;
+            }
             toast.error("Error", {
-                description: e.code === "auth/invalid-credential" ? "Incorrect credential" : "An error occurred"
-            })
+                description: errorMessage,
+            });
         }
     }
     return (
