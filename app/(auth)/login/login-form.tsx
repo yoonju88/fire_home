@@ -12,6 +12,7 @@ import Link from "next/link"
 import { useAuth } from "@/context/auth"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { FirebaseError } from "firebase/app";
 
 
 export default function LoginForm() {
@@ -32,10 +33,11 @@ export default function LoginForm() {
         } catch (e: unknown) {
             let errorMessage = "An error occurred";
             //To display type of error 
-            if (e instanceof Error) {
+            if (e instanceof FirebaseError) {
                 // Firebase 에러는 code가 붙는 경우가 있어
-                const errorCode = (e as any).code;
-                errorMessage = errorCode === "auth/invalid-credential" ? "Incorrect credential" : errorMessage;
+                errorMessage = e.code === "auth/invalid-credential"
+                    ? "Incorrect credential"
+                    : errorMessage;
             }
             toast.error("Error", {
                 description: errorMessage,
