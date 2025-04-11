@@ -8,14 +8,20 @@ export async function middleware(request: NextRequest) {
     if (request.method === "POST") {
         return NextResponse.next()
     }
-    const cookieStore = await cookies()
-    const token = cookieStore.get("firebaseAuthToken")?.value
 
-    if (!token && (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register"))) {
+    const cookieStore = await cookies()
+    const token = cookieStore.get("firebaseAuthToken")?.value;
+
+
+    if (!token && (request.nextUrl.pathname.startsWith("/login") ||
+        request.nextUrl.pathname.startsWith("/register"))
+    ) {
         return NextResponse.next()
     }
 
-    if (token && (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register"))) {
+    if (token && (request.nextUrl.pathname.startsWith("/login") ||
+        request.nextUrl.pathname.startsWith("/register"))
+    ) {
         return NextResponse.redirect(new URL("/", request.url))
     }
 
@@ -23,6 +29,19 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/", request.url))
     }
     const decodedToken = decodeJwt(token)
+    // 지금 시간이 토큰의 만료시간을 지났는가
+    if (decodedToken.exp && (decodedToken.exp - 300) * 1000 < Date.now()) {
+        return NextResponse.redirect(
+            new URL(
+                `/api/refresh-token?redrect=${encodeURIComponent(
+                    request.nextUrl.pathname
+                )}`,
+                request.url
+            )
+        )
+    }
+
+
     if (!decodedToken.admin) {
         return NextResponse.redirect(new URL("/", request.url))
     }
