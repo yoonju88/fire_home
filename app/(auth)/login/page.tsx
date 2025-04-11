@@ -1,11 +1,13 @@
-import ContinueWithGoogleButton from '@/components/nav/Continue-with-google'
 import React from 'react'
 import {
     Card,
     CardContent,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import LoginForm from './login-form'
+import Link from 'next/link'
 
 export default function Login() {
     return (
@@ -15,8 +17,17 @@ export default function Login() {
                     <CardTitle className='text-3xl font-bold'>Login</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <ContinueWithGoogleButton />
+                    <LoginForm />
                 </CardContent>
+                <CardFooter >
+                    Don&apos;t have an account ?
+                    <Link
+                        href="/register"
+                        className="pl-2 underline hover:text-red-500 hover:no-underline"
+                    >
+                        Register here.
+                    </Link>
+                </CardFooter>
             </Card>
         </div>
     )

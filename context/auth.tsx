@@ -6,6 +6,7 @@ import {
     User,
     GoogleAuthProvider,
     ParsedToken,
+    signInWithEmailAndPassword,
 } from "firebase/auth"
 import { createContext, useState, useEffect, useContext } from "react"
 
@@ -16,6 +17,7 @@ type AuthContextType = {
     logout: () => Promise<void>;
     loginWithGoogle: () => Promise<void>;
     customClaims: ParsedToken | null;
+    loginWithEmail: (email: string, password: string) => Promise<void>
 }
 //인증 관련 데이터를 저장할 Context
 // 초기값은 null로 설정되어 있으며, AuthContext.Provider를 사용해 데이터를 전달
@@ -55,10 +57,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = async () => {
         await auth.signOut();
     }
+
     const loginWithGoogle = async () => {
         const provider = new GoogleAuthProvider()
         await signInWithPopup(auth, provider)
     };
+
+    const loginWithEmail = async (email: string, password: string) => {
+        await signInWithEmailAndPassword(auth, email, password)
+
+    }
 
     return (
         <AuthContext.Provider
@@ -67,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 logout,
                 loginWithGoogle,
                 customClaims,
+                loginWithEmail,
             }}
         >
             {children}

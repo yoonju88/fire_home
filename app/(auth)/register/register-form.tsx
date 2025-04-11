@@ -41,76 +41,81 @@ export default function RegisterForm() {
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className='flex flex-col gap-4'
-            >
-                <FormField
-                    control={form.control}
-                    name='name'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Your name</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    placeholder="Your name"
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='email'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    placeholder="Email"
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='password'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    placeholder="Password"
-                                    type="password"
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='passwordConfirm'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Password Confirm</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    placeholder="Confirm Password"
-                                    type="password"
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">
-                    Register
-                </Button>
-                <div className='text-center mb-4'>or</div>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <fieldset
+                    disabled={form.formState.isSubmitting}
+                    className='flex flex-col gap-4'
+                >
+                    <FormField
+                        control={form.control}
+                        name='name'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Your name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Your name"
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='email'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Email"
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='password'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Password"
+                                        type="password"
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name='passwordConfirm'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password Confirm</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        placeholder="Confirm Password"
+                                        type="password"
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <Button
+                        type="submit"
+                        className='mt-2'
+                    >
+                        Register
+                    </Button>
+                    <div className='text-center mb-4'>or</div>
+                </fieldset>
             </form>
             <ContinueWithGoogleButton />
         </Form>
