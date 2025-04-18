@@ -8,6 +8,7 @@ import { BedIcon, HomeIcon, BathIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import numeral from 'numeral';
 import Link from "next/link"
+import ToggleFavoriteButton from './toggle-favorite-button';
 
 interface PropertySearchParams {
     page?: string;
@@ -76,6 +77,7 @@ export default async function PropertySearch({
                         <Card key={property.id} className='overflow-hidden'>
                             <CardContent className='px-0'>
                                 <div className='h-40 relative bg-sky-50 text-zinc-400 flex flex-col justify-center items-center'>
+                                    <ToggleFavoriteButton />
                                     {!!property.images?.[0] &&
                                         <Image
                                             fill
