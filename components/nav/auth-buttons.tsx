@@ -58,8 +58,8 @@ export default function AuthButtons() {
                         )}
                         {!auth.customClaims?.admin && (
                             <DropdownMenuItem asChild>
-                                <Link href="/account/my-favorites" >
-                                    My Favorites
+                                <Link href="/account/my-favourites" >
+                                    My Favourites
                                 </Link>
                             </DropdownMenuItem>
                         )}

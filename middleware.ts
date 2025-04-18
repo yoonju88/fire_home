@@ -58,6 +58,7 @@ export async function middleware(request: NextRequest) {
     ) {
         return NextResponse.redirect(new URL("/", request.url))
     }
+
     //사용자가 관리자? 요청한 URL 경로가 /account/my-favorites로 시작하면 홈(/)으로 리다이렉트
     if (
         decodedToken.admin &&
@@ -69,8 +70,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
 }
 
-
-
 export const config = {
     matcher: [
         "/admin-dashboard",
@@ -79,5 +78,6 @@ export const config = {
         "/register",
         "/account",
         "/account/:path*", // "/account/my-favorites"
+        "/property-search",
     ],
 }

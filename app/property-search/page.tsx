@@ -8,7 +8,8 @@ import { BedIcon, HomeIcon, BathIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import numeral from 'numeral';
 import Link from "next/link"
-import ToggleFavoriteButton from './toggle-favorite-button';
+import ToggleFavouriteButton from './toggle-favourite-button';
+import { getUserFavourites } from '@/data/favourites';
 
 interface PropertySearchParams {
     page?: string;
@@ -48,6 +49,10 @@ export default async function PropertySearch({
         }
     })
 
+    const userFavourite = await getUserFavourites();
+    if (!userFavourite) { return }
+    console.log({ userFavourite });
+
     return (
         <div className="max-w-screen-lg mx-auto">
             <h1 className="text-4xl font-bold p-5">
@@ -77,12 +82,16 @@ export default async function PropertySearch({
                         <Card key={property.id} className='overflow-hidden'>
                             <CardContent className='px-0'>
                                 <div className='h-40 relative bg-sky-50 text-zinc-400 flex flex-col justify-center items-center'>
-                                    <ToggleFavoriteButton />
+                                    <ToggleFavouriteButton
+                                        isFavourite={userFavourite[property.id]}
+                                        propertyId={property.id}
+                                    />
                                     {!!property.images?.[0] &&
                                         <Image
                                             fill
                                             className="object-cover"
-                                            src={imageUrlFormatter(property.images[0])}
+                                            src={imageUrlFormatter(property.images[0])
+                                            }
                                             alt=''
                                         />
                                     }

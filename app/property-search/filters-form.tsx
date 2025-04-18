@@ -105,7 +105,6 @@ export default function FiltersForm() {
                     Search
                 </Button>
             </form>
-
         </Form>
     )
 }
