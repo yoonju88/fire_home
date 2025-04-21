@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const loginWithEmail = async (email: string, password: string) => {
         await signInWithEmailAndPassword(auth, email, password)
-
     }
 
     return (

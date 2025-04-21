@@ -15,7 +15,7 @@ export const GET = async (request: NextRequest) => {
         return NextResponse.redirect(new URL("/", request.url))
     }
     try {
-        const response = await fetch(`https://securetoken.googletoken.googleapis.com/v1/token?key=process.env.NEXT_PUBLIC_FIREBASE_API_KEY`, {
+        const response = await fetch(`https://securetoken.googletoken.googleapis.com/v1/token?key={process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
