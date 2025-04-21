@@ -42,6 +42,25 @@ export const getProperties = async (options?: GetPropertiesOptions) => {
         .offset((page - 1) * pageSize)
         .get()
 
+    //console.log(propertiesSnapshot.empty)
+    if (propertiesSnapshot.empty) {
+        // fallback: no filters
+        const fallbackQuery = firestore.collection("properties").orderBy("updated", "desc");
+        const fallbackSnapshot = await fallbackQuery
+            .limit(pageSize)
+            .offset((page - 1) * pageSize)
+            .get();
+
+        const properties = fallbackSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        } as Property));
+
+        const fallbackTotalPages = await getTotalPages(fallbackQuery, pageSize);
+
+        return { data: properties, totalPages: fallbackTotalPages };
+    }
+
     const properties = propertiesSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()

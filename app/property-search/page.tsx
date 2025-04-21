@@ -29,10 +29,10 @@ export default async function PropertySearch({
 }) {
     const searchParamsValues = await searchParams;
 
-    const parsedPage = parseInt(searchParamsValues.page || '1')
-    const parsedMinPrice = parseInt(searchParamsValues.minPrice || '0')
-    const parsedMaxPrice = parseInt(searchParamsValues.maxPrice || '0')
-    const parsedMinBedrooms = parseInt(searchParamsValues.minBedrooms || '0')
+    const parsedPage = parseInt(searchParamsValues?.page || '1')
+    const parsedMinPrice = parseInt(searchParamsValues?.minPrice || '0')
+    const parsedMaxPrice = parseInt(searchParamsValues?.maxPrice || '0')
+    const parsedMinBedrooms = parseInt(searchParamsValues?.minBedrooms || '0')
 
     const page = isNaN(parsedPage) ? 1 : parsedPage
     const minPrice = isNaN(parsedMinPrice) ? null : parsedMinPrice
@@ -64,8 +64,6 @@ export default async function PropertySearch({
     if (token) {
         verifiedToken = await auth.verifyIdToken(token)
     }
-
-
 
     return (
         <div className="max-w-screen-lg mx-auto">
