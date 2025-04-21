@@ -21,17 +21,21 @@ export const getPropertyById = async (id: string) => {
 
 
 export const getPropertiesById = async (propertyIds: string[]) => {
+    if (!propertyIds || propertyIds.length === 0) {
+        return []; // 빈 배열 반환하면 안전하게 처리됨
+    }
     const propertiesSnapshot = await firestore
         .collection("properties")
         .where("__name__", "in", propertyIds)
         .get();
 
-    if (!propertiesSnapshot) { return null }
 
     const propertiesData = propertiesSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
     } as Property)
     );
+
+
     return propertiesData;
 };

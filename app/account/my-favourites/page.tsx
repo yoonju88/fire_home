@@ -1,12 +1,17 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { getUserFavourites } from '@/data/favourites'
 import { getPropertiesById } from '@/lib/properties'
-import React from 'react'
+import { Button } from '@/components/ui/button'
+import PropertyStatusBadge from '@/components/Property-status-badge'
+import { EyeIcon, Trash2Icon } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function MyFavourites({
     searchParams
 }: {
     searchParams?: Promise<Record<string, string | undefined>>
 }) {
+
     const searchParamsValue = await searchParams
     //“URL에서 page 번호를 가져오되, 없으면 1로 처리
     const page = searchParamsValue?.page ? parseInt(searchParamsValue.page) : 1
@@ -30,8 +35,68 @@ export default async function MyFavourites({
     //console.log({ properties })
 
     return (
-        <>
+        <div className='max-w-screen-lg mx-auto'>
+            <h1 className="text-4xl font-bold py-4 mt-5">My Favourites lists.</h1>
+            {!paginatedFavourites.length && (
+                <h2 className='text-center text-zinc-400 text-3xl font-bold py-10 '>You have no favourited lists.</h2>
+            )}
+            {!!paginatedFavourites.length && (
+                <Table className='mt-4'>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>
+                                Property
+                            </TableHead>
+                            <TableHead>
+                                Status
+                            </TableHead>
+                            <TableHead />
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {paginatedFavourites.map((favourite) => {
+                            const property = properties.find(
+                                (property) => property.id === favourite
+                            )
+                            const address = [
+                                property?.address1,
+                                property?.address2,
+                                property?.city,
+                                property?.postcode,
+                            ].filter((addressLine) => !!addressLine)
+                                .join(",");
 
-        </>
+                            return (
+                                <TableRow key={favourite}>
+                                    <TableCell>{address}</TableCell>
+                                    <TableCell>
+                                        {!!property && (
+                                            <PropertyStatusBadge status={property?.status} />
+                                        )}
+                                    </TableCell>
+                                    <TableCell className='flex justify-center gap-2'>
+                                        {!!property && (
+                                            <>
+                                                <Button asChild variant="outline">
+                                                    <Link href={`/property/${property.id}`}>
+                                                        <EyeIcon />
+                                                    </Link>
+                                                </Button>
+                                                <Button asChild variant="outline">
+                                                    <Link href="#">
+                                                        <Trash2Icon />
+                                                    </Link>
+                                                </Button>
+                                            </>
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
+            )}
+
+        </div>
     )
 }
