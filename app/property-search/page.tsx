@@ -10,6 +10,9 @@ import numeral from 'numeral';
 import Link from "next/link"
 import ToggleFavouriteButton from './toggle-favourite-button';
 import { getUserFavourites } from '@/data/favourites';
+import { cookies } from 'next/headers';
+import { auth } from "@/firebase/server"
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 interface PropertySearchParams {
     page?: string;
@@ -49,9 +52,20 @@ export default async function PropertySearch({
         }
     })
 
-    const userFavourite = await getUserFavourites();
-    if (!userFavourite) { return }
-    console.log({ userFavourite });
+    const userFavourites = await getUserFavourites();
+    if (!userFavourites) { return }
+    //console.log({userFavourites})
+    //cookieStore는 Web Platform API 중 하나로, 브라우저의 쿠키에 접근할 수 있는 인터페이스
+    const cookieStore = await cookies();
+    const token = (await cookieStore.get("firebaseAuthToken"))?.value
+    // ?.value 덕분에 쿠키가 없어도 오류가 나지 않도록 안전하게 처리
+    let verifiedToken: DecodedIdToken | null;
+
+    if (token) {
+        verifiedToken = await auth.verifyIdToken(token)
+    }
+
+
 
     return (
         <div className="max-w-screen-lg mx-auto">
@@ -82,10 +96,14 @@ export default async function PropertySearch({
                         <Card key={property.id} className='overflow-hidden'>
                             <CardContent className='px-0'>
                                 <div className='h-40 relative bg-sky-50 text-zinc-400 flex flex-col justify-center items-center'>
-                                    <ToggleFavouriteButton
-                                        isFavourite={userFavourite[property.id]}
-                                        propertyId={property.id}
-                                    />
+                                    { // 관리자(admin)가 아니거나, 아예 인증이 안 된 사용자일 경우
+                                        (!verifiedToken || !verifiedToken.admin) && (
+                                            <ToggleFavouriteButton
+                                                isFavourite={userFavourites[property.id]}
+                                                propertyId={property.id}
+                                            />
+                                        )}
+
                                     {!!property.images?.[0] &&
                                         <Image
                                             fill
