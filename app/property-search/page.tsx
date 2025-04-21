@@ -57,7 +57,7 @@ export default async function PropertySearch({
     //console.log({userFavourites})
     //cookieStore는 Web Platform API 중 하나로, 브라우저의 쿠키에 접근할 수 있는 인터페이스
     const cookieStore = await cookies();
-    const token = (await cookieStore.get("firebaseAuthToken"))?.value
+    const token = cookieStore.get("firebaseAuthToken")?.value
     // ?.value 덕분에 쿠키가 없어도 오류가 나지 않도록 안전하게 처리
     let verifiedToken: DecodedIdToken | null;
 
