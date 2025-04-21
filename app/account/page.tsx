@@ -5,6 +5,7 @@ import React from 'react'
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import UpdatePasswordForm from './update-password-form';
 
 export default async function Account() {
 
@@ -37,9 +38,7 @@ export default async function Account() {
                     <Label>Email</Label>
                     <div>{decodedToken.email}</div>
                     {!!isPasswordProvider && (
-                        <div>
-                            Update Password
-                        </div>
+                        <UpdatePasswordForm />
                     )}
                 </CardContent>
             </Card>
