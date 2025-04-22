@@ -3,10 +3,6 @@
 import { useAuth } from "@/context/auth"
 import React, { useState } from 'react'
 import {
-    deleteUser,
-    reauthenticateWithCredential
-} from "firebase/auth"
-import {
     AlertDialog,
     AlertDialogCancel,
     AlertDialogContent,
@@ -17,7 +13,6 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from '@/components/ui/button'
-import { toast } from "sonner";
 import { TrashIcon } from "lucide-react";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "@/firebase/client";
