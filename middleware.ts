@@ -19,14 +19,18 @@ export async function middleware(request: NextRequest) {
         !token && (
             pathname.startsWith("/login") ||
             pathname.startsWith("/register") ||
-            pathname.startsWith("/property-search")
+            pathname.startsWith("/property-search") ||
+            pathname.startsWith("/forgot-password")
         )
     ) {
         return NextResponse.next()
     }
     //로그인한 사용자가 로그인/회원가입 페이지로 가려는 걸 막는 로직
-    if (token && (request.nextUrl.pathname.startsWith("/login") ||
-        request.nextUrl.pathname.startsWith("/register"))
+    if (token && (
+        pathname.startsWith("/login") ||
+        pathname.startsWith("/register") ||
+        pathname.startsWith("/forgot-password")
+    )
     ) {
         return NextResponse.redirect(new URL("/", request.url))
     }
@@ -52,18 +56,12 @@ export async function middleware(request: NextRequest) {
     }
 
     //관리자가 아닌데, /admin-dashboard 페이지에 접근하려고 한다면 (홈페이지)로 리다이렉트
-    if (
-        !decodedToken.admin &&
-        pathname.startsWith("/admin-dashboard")
-    ) {
+    if (!decodedToken.admin && pathname.startsWith("/admin-dashboard")) {
         return NextResponse.redirect(new URL("/", request.url))
     }
 
     //사용자가 관리자? 요청한 URL 경로가 /account/my-favorites로 시작하면 홈(/)으로 리다이렉트
-    if (
-        decodedToken.admin &&
-        pathname.startsWith("account/my-favorites")
-    ) {
+    if (decodedToken.admin && pathname.startsWith("account/my-favorites")) {
         return NextResponse.redirect(new URL("/", request.url))
     }
 
@@ -75,6 +73,7 @@ export const config = {
         "/admin-dashboard",
         "/admin-dashboard/:path*",
         "/login",
+        "/forgot-password",
         "/register",
         "/account",
         "/account/:path*", // "/account/my-favorites"

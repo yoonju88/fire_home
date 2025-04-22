@@ -97,7 +97,7 @@ export default function LoginForm({
                     </Button>
                     <div>
                         Forgotton your password ?
-                        <Link href="#" className="pl-2 underline hover:text-red-500 hover:no-underline">
+                        <Link href="/forgot-password" className="pl-2 underline hover:text-red-500 hover:no-underline">
                             Reset it here.
                         </Link>
                     </div>
