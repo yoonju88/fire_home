@@ -5,7 +5,7 @@ import { HomeIcon } from "lucide-react";
 
 export default function Navigation() {
     return (
-        <nav className="bg-sky-950 text-white p-5 h-24 flex items-center justify-between">
+        <nav className="bg-sky-950 text-white p-5 h-24 flex items-center justify-between z-10 relative">
             <Link
                 href="/"
                 className="text-3xl tracking-widest flex font-medium gap-2 items-center uppercase"
