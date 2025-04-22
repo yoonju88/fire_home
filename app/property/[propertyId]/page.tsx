@@ -18,6 +18,11 @@ import Image from 'next/image';
 import BackButton from './back-button';
 import imageUrlFormatter from '@/lib/imageUrlFormatter';
 
+//해당 페이지 또는 라우트가 항상 “정적(static)“으로 생성되게 설정하겠다는 뜻
+// 빌드할 때 HTML이 미리 생성되고, 사용자가 들어올 땐 서버 없이 빠르게 서비스됨.
+//API나 DB 연결 없이, 변하지 않는 페이지에 딱 좋아
+export const dynamic = "force-static";
+
 export default async function Property({ params }: { params: Promise<{ propertyId: string }> }) {
     const { propertyId } = await params
     const property = await getPropertyById(propertyId)
@@ -28,8 +33,6 @@ export default async function Property({ params }: { params: Promise<{ propertyI
         property?.city,
         property?.postcode
     ].filter(addressLine => !!addressLine)
-
-
 
     return (
         <div className="grid grid-cols-[1fr_500px]">
