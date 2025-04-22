@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner";
+import { deleteUserFavourites } from "./action";
 
 
 export default function DeleteAccountButton() {
@@ -38,6 +39,7 @@ export default function DeleteAccountButton() {
                     auth.currentUser,
                     EmailAuthProvider.credential(auth.currentUser.email, password)
                 )
+                await deleteUserFavourites()
                 await deleteUser(auth.currentUser)
                 await removeToken()
                 toast.success('', { description: "Your current was deleted successfully." });
