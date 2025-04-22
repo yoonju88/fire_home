@@ -2,6 +2,7 @@ import { Breadcrumbs } from '@/components/ui/breadcrumb'
 import { getPropertyById } from '@/lib/properties';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import EditPropertyForm from './edit-property-form';
+import DeletePropertyButton from './delete-property-button';
 
 
 export default async function EditProperty({ params }: { params: Promise<{ propertyId: string }> }) {
@@ -28,8 +29,9 @@ export default async function EditProperty({ params }: { params: Promise<{ prope
             />
             <Card className="mt-5">
                 <CardHeader>
-                    <CardTitle className="text-3xl font-bold">
+                    <CardTitle className="text-3xl font-bold flex justify-between">
                         Edit Property
+                        <DeletePropertyButton propertyId={propertyId} images={property.images ?? []} />
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
